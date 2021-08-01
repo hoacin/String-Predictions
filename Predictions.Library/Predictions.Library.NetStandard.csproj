@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="SampleData\Words3k.txt" />
+    <None Remove="StringPredictors\VulkanPredictor\Initialization\Shaders\Data\Init.spv" />
+    <None Remove="StringPredictors\VulkanPredictor\Initialization\Shaders\Data\Reduce.spv" />
+    <None Remove="StringPredictors\VulkanPredictor\Initialization\Shaders\Data\Result.spv" />
+    <None Remove="StringPredictors\VulkanPredictor\Initialization\Shaders\Data\Search.spv" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="SampleData\Words3k.txt" />
+    <EmbeddedResource Include="StringPredictors\VulkanPredictor\Initialization\Shaders\Data\Init.spv" />
+    <EmbeddedResource Include="StringPredictors\VulkanPredictor\Initialization\Shaders\Data\Reduce.spv" />
+    <EmbeddedResource Include="StringPredictors\VulkanPredictor\Initialization\Shaders\Data\Result.spv" />
+    <EmbeddedResource Include="StringPredictors\VulkanPredictor\Initialization\Shaders\Data\Search.spv" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="VulkanSharp" Version="0.1.10" />
+  </ItemGroup>
+
+</Project>

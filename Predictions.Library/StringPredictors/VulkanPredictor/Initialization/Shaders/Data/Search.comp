@@ -1,0 +1,40 @@
+#version 450
+
+layout( push_constant ) uniform Constants
+{
+	uint wordsInDictionary;
+    uint perRowOffset;
+    uint[41] word;
+} pushConstants;
+
+layout(set = 0, binding = 0) readonly buffer FastSearchData 
+{
+    uint data[];
+} searchBuffer;
+
+layout(set = 0, binding = 1) writeonly buffer FastOutputData 
+{
+    uint data[];
+} outputBuffer;
+
+layout(local_size_x = 256, local_size_y = 1, local_size_z = 1) in;
+void main() 
+{
+    uint word = gl_GlobalInvocationID.x;
+    if (word>=pushConstants.wordsInDictionary)
+        return;
+
+    uint totalMutualPairs = 0;
+    for (uint i=0;i<41;i++)
+    {
+        uint indexInSearchData = pushConstants.perRowOffset * i + word;
+        uint mutualBits = pushConstants.word[i]&searchBuffer.data[indexInSearchData];
+        totalMutualPairs+=bitCount(mutualBits);
+    }
+
+    if (totalMutualPairs>31)
+        totalMutualPairs = 31;
+
+    totalMutualPairs = totalMutualPairs << 27 | word;
+    outputBuffer.data[word] = totalMutualPairs;
+}

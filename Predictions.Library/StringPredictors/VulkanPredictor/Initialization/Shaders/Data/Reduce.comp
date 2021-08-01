@@ -1,0 +1,23 @@
+#version 450
+
+layout(local_size_x = 256, local_size_y = 1, local_size_z = 1) in;
+
+layout( push_constant ) uniform Constants
+{
+	uint wall;
+} pushConstants;
+
+layout(set = 0, binding = 1) buffer FastOutputData 
+{
+    uint data[];
+} outputBuffer;
+
+void main() 
+{
+    uint idx = gl_GlobalInvocationID.x;
+    if (idx>=pushConstants.wall)
+        return;
+    uint laterOne = outputBuffer.data[idx+pushConstants.wall];
+    if (outputBuffer.data[idx]<laterOne)
+        outputBuffer.data[idx] = laterOne;
+}
